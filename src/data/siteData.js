@@ -51,23 +51,23 @@ export const screenshotCards = [
 
 export const team = [
   {
-    name: "Frazer",
-    role: "Founder / Creative Director",
-    bio: "Leads the direction of PulseGrid Studios with a focus on immersive design, identity, and long-term project vision.",
+    name: "FrazzlesGrant",
+    role: "Lead Developer / Founder",
+    bio: "Leads the development team with a focus on immersive design, identity, and long-term project vision.",
     robloxId: 1,
     href: "#contact",
     cta: "View profile",
   },
   {
-    name: "Team Member",
-    role: "Developer",
+    name: "Yoro",
+    role: "Developer / Founder",
     bio: "Works on systems, gameplay features, and implementation across current and future studio projects.",
     robloxId: 2,
     href: "#contact",
     cta: "Meet member",
   },
   {
-    name: "Team Member",
+    name: "Team Member (placeholder",
     role: "Community / Support",
     bio: "Helps shape the community experience, feedback flow, and overall player-facing presentation.",
     robloxId: 3,

@@ -7,9 +7,6 @@ export default function TeamSection({ palette, theme, team }) {
       <div className="max-w-2xl">
         <p className={`text-sm font-medium ${palette.accentText}`}>Meet the team</p>
         <h2 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">The people behind PulseGrid Studios</h2>
-        <p className={`mt-4 text-base sm:text-lg leading-8 ${palette.muted}`}>
-          These cards now support Roblox avatar thumbnails, links, and hover overlays. Just replace the example Roblox user IDs and profile links with your own.
-        </p>
       </div>
 
       <div className="mt-10 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
