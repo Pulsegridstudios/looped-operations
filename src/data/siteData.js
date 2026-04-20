@@ -52,16 +52,16 @@ export const screenshotCards = [
 export const team = [
   {
     name: "FrazzlesGrant",
-    role: "Lead Developer / Founder",
-    bio: "Leads the development team with a focus on immersive design, identity, and long-term project vision.",
+    role: "Lead Developer / Co-Founder",
+    bio: "Leads the overall direction of the project, overseeing development, design, and long-term vision. Responsible for core systems, technical decisions, and ensuring the project maintains a consistent, high-quality standard.  ",
     avatar: `${import.meta.env.BASE_URL}avatars/frazzlesgrant.png`,
     href: "#contact",
     cta: "View profile",
   },
   {
     name: "Yoro",
-    role: "Developer / Founder",
-    bio: "Works on systems, gameplay features, and implementation across current and future studio projects.",
+    role: "Founder / Developer",
+    bio: "Contributes to the development of core systems and features while helping shape the overall direction of the project. Supports both technical implementation and creative decisions to ensure a consistent and high-quality experience.",
     avatar: `${import.meta.env.BASE_URL}avatars/yoro.png`,
     href: "#contact",
     cta: "Meet member",
