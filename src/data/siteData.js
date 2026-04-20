@@ -50,6 +50,14 @@ export const screenshotCards = [
 ];
 
 export const team = [
+    {
+    name: "Yoro",
+    role: "Founder / Developer",
+    bio: "Founder of PulseGrid Studios,         Contributes to the development of core systems and features while helping shape the overall direction of the project. Supports both technical implementation and creative decisions to ensure a consistent and high-quality experience.",
+    avatar: `${import.meta.env.BASE_URL}avatars/yoro.png`,
+    href: "#contact",
+    cta: "Meet member",
+  },
   {
     name: "FrazzlesGrant",
     role: "Lead Developer / Co-Founder",
@@ -57,14 +65,6 @@ export const team = [
     avatar: `${import.meta.env.BASE_URL}avatars/frazzlesgrant.png`,
     href: "#contact",
     cta: "View profile",
-  },
-  {
-    name: "Yoro",
-    role: "Founder / Developer",
-    bio: "Contributes to the development of core systems and features while helping shape the overall direction of the project. Supports both technical implementation and creative decisions to ensure a consistent and high-quality experience.",
-    avatar: `${import.meta.env.BASE_URL}avatars/yoro.png`,
-    href: "#contact",
-    cta: "Meet member",
   },
   {
     name: "Team Member (placeholder)",
