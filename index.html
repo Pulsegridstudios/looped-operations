@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Looped Operation — PulseGrid Studios</title>
+<link rel="icon" href="assets/favicon.ico" type="image/x-icon"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#04090d;--bg2:#070e15;--bg3:#0b1520;
+  --cyan:#00e5ff;--orange:#ff6b35;--green:#39ff14;--red:#ff2d55;
+  --text:#b8cdd8;--muted:#4a6a7a;--border:rgba(0,229,255,0.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);pointer-events:none;z-index:9000}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3.5rem;background:rgba(4,9,13,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;letter-spacing:0.18em;color:var(--cyan);text-decoration:none;text-shadow:0 0 15px rgba(0,229,255,0.4)}
+.nav-logo span{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:2rem}
+.nav-link{font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.14em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
+.nav-link:hover{color:var(--cyan)}
+.nav-btn{font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;padding:0.55rem 1.3rem;background:transparent;border:1px solid var(--cyan);color:var(--cyan);text-decoration:none;text-transform:uppercase;transition:all 0.2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.nav-btn:hover{background:var(--cyan);color:var(--bg);box-shadow:0 0 25px rgba(0,229,255,0.5)}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#rc{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hero-overlay{position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse 65% 65% at 50% 50%,transparent 25%,rgba(4,9,13,0.6) 65%,rgba(4,9,13,0.96) 100%)}
+.hero-content{position:relative;z-index:3;text-align:center;max-width:860px;padding:2rem;animation:fadeUp 1s ease both}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.22em;color:var(--green);text-transform:uppercase;margin-bottom:1.8rem}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.15}}
+.hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(3.2rem,9vw,7.5rem);line-height:0.9;letter-spacing:-0.02em;text-transform:uppercase;margin-bottom:0.3rem}
+.hero-title .t1{color:#fff;display:block}
+.hero-title .t2{color:transparent;-webkit-text-stroke:1.5px var(--cyan);display:block;text-shadow:none}
+.hero-sub{font-family:'Orbitron',monospace;font-weight:400;font-size:clamp(0.75rem,1.8vw,1rem);letter-spacing:0.35em;color:var(--muted);text-transform:uppercase;margin:1.2rem 0 2rem}
+.coming-badge{display:inline-flex;align-items:center;gap:0.7rem;font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.65rem 1.8rem;margin-bottom:2rem;border:1px solid rgba(255,107,53,0.45);color:var(--orange);background:rgba(255,107,53,0.06);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)}
+.cb-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange)}
+.hero-desc{font-family:'Share Tech Mono',monospace;font-size:0.92rem;line-height:1.9;color:var(--text);max-width:580px;margin:0 auto 2.8rem}
+.hero-desc strong{color:var(--cyan);font-weight:400}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-p{font-family:'Share Tech Mono',monospace;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding:0.95rem 2.2rem;background:var(--cyan);color:var(--bg);font-weight:bold;transition:all 0.2s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transition:left 0.4s}
+.btn-p:hover::before{left:100%}
+.btn-p:hover{box-shadow:0 0 40px rgba(0,229,255,0.6);transform:translateY(-2px)}
+.btn-s{font-family:'Share Tech Mono',monospace;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;padding:0.95rem 2.2rem;background:transparent;color:var(--text);border:1px solid rgba(184,205,216,0.2);transition:all 0.2s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%)}
+.btn-s:hover{border-color:rgba(184,205,216,0.6);color:#fff}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+.scroll-hint span{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--muted),transparent);animation:sd 1.8s ease-in-out infinite}
+@keyframes sd{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.ticker{background:rgba(255,45,85,0.05);border-top:1px solid rgba(255,45,85,0.2);border-bottom:1px solid rgba(255,45,85,0.2);padding:0.6rem 0;overflow:hidden;position:relative;z-index:4}
+.ticker-wrap{display:flex;animation:tick 35s linear infinite;white-space:nowrap}
+.ticker-item{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;color:var(--red);text-transform:uppercase;padding:0 3rem;flex-shrink:0}
+.ticker-item::before{content:'// '}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+section{position:relative;z-index:4;padding:6.5rem 3.5rem}
+.s-label{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.25em;color:var(--cyan);text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.7rem}
+.s-label::before{content:'';width:20px;height:1px;background:var(--cyan)}
+.s-title{font-family:'Orbitron',monospace;font-weight:800;font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1.1;color:#fff;margin-bottom:1.2rem}
+.s-desc{font-size:1rem;line-height:1.85;color:var(--text);max-width:540px}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1200px;margin:0 auto}
+.reactor-card{background:var(--bg2);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden}
+.reactor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.rc-title{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase}
+.rc-status{display:flex;align-items:center;gap:0.4rem;font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;color:var(--orange)}
+.s-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);box-shadow:0 0 6px var(--orange)}
+.unit-box{text-align:center;padding:2rem 1rem;border:1px solid rgba(0,229,255,0.07);background:rgba(0,229,255,0.02);margin-bottom:1.5rem}
+.unit-num{font-family:'Orbitron',monospace;font-weight:900;font-size:5rem;color:var(--cyan);text-shadow:0 0 30px rgba(0,229,255,0.35);display:block;line-height:1}
+.unit-lbl{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-top:0.4rem;display:block}
+.bars{display:flex;flex-direction:column;gap:0.75rem}
+.bar-row{display:flex;align-items:center;gap:0.8rem}
+.bar-lbl{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;width:78px;flex-shrink:0}
+.bar-track{flex:1;height:3px;background:rgba(255,255,255,0.05);position:relative;overflow:hidden}
+.bar-fill{height:100%;background:var(--cyan);box-shadow:0 0 8px rgba(0,229,255,0.5);animation:bi 1.6s ease both}
+.bar-fill.o{background:var(--orange);box-shadow:0 0 8px rgba(255,107,53,0.5)}
+.bar-fill.g{background:var(--green);box-shadow:0 0 8px rgba(57,255,20,0.4)}
+@keyframes bi{from{width:0!important}to{}}
+.bar-val{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--cyan);width:34px;text-align:right;flex-shrink:0}
+.bar-val.o{color:var(--orange)}
+.bar-val.g{color:var(--green)}
+
+.features-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.features-inner{max-width:1200px;margin:0 auto}
+.features-header{max-width:600px;margin-bottom:3.5rem}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--border)}
+.feat-card{background:var(--bg2);padding:2.2rem 2rem;position:relative;overflow:hidden;transition:background 0.3s}
+.feat-card:hover{background:var(--bg3)}
+.fc-num{font-family:'Orbitron',monospace;font-weight:900;font-size:2.4rem;color:rgba(0,229,255,0.07);line-height:1;margin-bottom:0.9rem;transition:color 0.3s}
+.feat-card:hover .fc-num{color:rgba(0,229,255,0.14)}
+.fc-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.95rem;color:#fff;margin-bottom:0.55rem;letter-spacing:0.03em}
+.fc-desc{font-size:0.87rem;line-height:1.75;color:var(--muted)}
+.fc-tag{display:inline-block;margin-top:1rem;font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;padding:0.22rem 0.65rem;color:var(--cyan);border:1px solid rgba(0,229,255,0.22);text-transform:uppercase}
+
+.studio-sec{max-width:1200px;margin:0 auto}
+.studio-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.studio-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative}
+.studio-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--orange),transparent)}
+.sc-name{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;color:#fff;margin-bottom:0.35rem;letter-spacing:0.04em}
+.sc-sub{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;color:var(--orange);text-transform:uppercase;margin-bottom:1.4rem}
+.sc-desc{font-size:0.92rem;line-height:1.8;color:var(--text);margin-bottom:1.8rem}
+.sc-lnk{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Share Tech Mono',monospace;font-size:0.73rem;letter-spacing:0.1em;color:var(--cyan);text-decoration:none;text-transform:uppercase;transition:all 0.2s;border-bottom:1px solid rgba(0,229,255,0.28);padding-bottom:2px}
+.sc-lnk:hover{color:#fff;border-color:#fff}
+.sc-lnk svg{width:11px;height:11px;transition:transform 0.2s}
+.sc-lnk:hover svg{transform:translateX(3px)}
+
+.comm-section{background:var(--bg2);border-top:1px solid var(--border);text-align:center}
+.comm-inner{max-width:680px;margin:0 auto}
+.comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem}
+.comm-card{background:var(--bg);border:1px solid var(--border);padding:2rem 1.5rem;text-decoration:none;transition:all 0.25s;position:relative;overflow:hidden}
+.comm-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;opacity:0;transition:opacity 0.25s}
+.comm-card.dc::before{background:linear-gradient(90deg,transparent,#5865F2,transparent)}
+.comm-card.rb::before{background:linear-gradient(90deg,transparent,var(--orange),transparent)}
+.comm-card:hover::before{opacity:1}
+.comm-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-3px)}
+.cc-icon{width:46px;height:46px;border-radius:10px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center}
+.cc-icon.dc-i{background:rgba(88,101,242,0.13)}
+.cc-icon.rb-i{background:rgba(255,107,53,0.1)}
+.cc-name{font-family:'Orbitron',monospace;font-weight:700;font-size:0.92rem;color:#fff;margin-bottom:0.3rem}
+.cc-desc{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:var(--muted)}
+
+footer{border-top:1px solid var(--border);padding:2.5rem 3.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:4}
+.f-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:0.88rem;letter-spacing:0.18em;color:var(--muted);text-decoration:none}
+.f-logo span{color:var(--orange)}
+.f-copy{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase}
+.f-links{display:flex;gap:1.5rem}
+.f-links a{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
+.f-links a:hover{color:var(--cyan)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-link{display:none}
+  section{padding:4rem 1.5rem}
+  .about-grid,.studio-grid{grid-template-columns:1fr;gap:2.5rem}
+  .feat-grid{grid-template-columns:1fr}
+  .comm-cards{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem}
+  .f-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">LOOPED<span>OP</span></a>
+  <div class="nav-right">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#studio" class="nav-link">Studio</a>
+    <a href="https://pulsegridstudios.github.io/wiki/" target="_blank" class="nav-link">Wiki</a>
+    <a href="https://discord.gg/hbsPmdzdyE" target="_blank" class="nav-btn">Join Discord</a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <canvas id="rc"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div>PulseGrid Studios &mdash; Roblox</div>
+    <h1 class="hero-title"><span class="t1">Looped</span><span class="t2">Operation</span></h1>
+    <p class="hero-sub">Advanced Gas-cooled Reactor Simulation</p>
+    <div class="coming-badge"><div class="cb-dot"></div>Game Coming Soon &mdash; Stay Tuned</div>
+    <p class="hero-desc">Step into the control room of a <strong>fully simulated AGR nuclear reactor</strong> on Roblox. Manage systems, prevent meltdowns, and keep the grid alive.</p>
+    <div class="hero-actions">
+      <a href="https://discord.gg/hbsPmdzdyE" target="_blank" class="btn-p">Join Discord</a>
+      <a href="https://www.roblox.com/communities/33322553/PulseGrid-Studios" target="_blank" class="btn-s">Roblox Community</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-wrap">
+    <span class="ticker-item">Unit 1 under construction</span>
+    <span class="ticker-item">Game not yet released</span>
+    <span class="ticker-item">AGR coolant loop initializing</span>
+    <span class="ticker-item">Follow on Discord for updates</span>
+    <span class="ticker-item">Control rods nominal</span>
+    <span class="ticker-item">Core temperature monitored</span>
+    <span class="ticker-item">PulseGrid Studios &mdash; Roblox</span>
+    <span class="ticker-item">Unit 1 under construction</span>
+    <span class="ticker-item">Game not yet released</span>
+    <span class="ticker-item">AGR coolant loop initializing</span>
+    <span class="ticker-item">Follow on Discord for updates</span>
+    <span class="ticker-item">Control rods nominal</span>
+    <span class="ticker-item">Core temperature monitored</span>
+    <span class="ticker-item">PulseGrid Studios &mdash; Roblox</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="s-label">The Game</div>
+      <h2 class="s-title">One Reactor.<br>Infinite Pressure.</h2>
+      <p class="s-desc">Looped Operation puts you in charge of a real Advanced Gas-cooled Reactor. Monitor live telemetry, manage control rod insertion, regulate coolant flow, and respond to emergencies — all within Roblox.<br><br>Built by PulseGrid Studios with obsessive attention to reactor physics. Currently in active development with <strong style="color:var(--cyan);font-weight:400">Unit 1</strong> as the sole operational unit.</p>
+    </div>
+    <div>
+      <div class="reactor-card">
+        <div class="rc-head">
+          <span class="rc-title">Unit 1 &mdash; AGR Station</span>
+          <span class="rc-status"><div class="s-dot"></div>In Development</span>
+        </div>
+        <div class="unit-box">
+          <span class="unit-num">1</span>
+          <span class="unit-lbl">Operational Unit</span>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><span class="bar-lbl">Core Temp</span><div class="bar-track"><div class="bar-fill o" style="width:68%"></div></div><span class="bar-val o">68%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Coolant</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="bar-val">82%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Output</span><div class="bar-track"><div class="bar-fill g" style="width:55%"></div></div><span class="bar-val g">55%</span></div>
+          <div class="bar-row"><span class="bar-lbl">Pressure</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-val">74%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="features-section">
+  <div class="features-inner">
+    <div class="features-header">
+      <div class="s-label">Gameplay</div>
+      <h2 class="s-title">What Awaits You</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="fc-num">01</div><div class="fc-title">Live Reactor Control</div><p class="fc-desc">Operate a full AGR control room. Insert control rods, adjust gas flow, manage turbines — every action has a real consequence.</p><span class="fc-tag">Core system</span></div>
+      <div class="feat-card"><div class="fc-num">02</div><div class="fc-title">Emergency Scenarios</div><p class="fc-desc">SCRAM events, coolant leaks, pressure anomalies. React fast or face a full shutdown. Every shift is unpredictable.</p><span class="fc-tag">Dynamic events</span></div>
+      <div class="feat-card"><div class="fc-num">03</div><div class="fc-title">Crew Multiplayer</div><p class="fc-desc">Coordinate with other players across multiple stations. Communication is as critical as technical skill.</p><span class="fc-tag">Multiplayer</span></div>
+      <div class="feat-card"><div class="fc-num">04</div><div class="fc-title">Telemetry Dashboard</div><p class="fc-desc">Real-time gauges, readouts, and alarm panels modeled after authentic reactor instrumentation layouts.</p><span class="fc-tag">Simulation</span></div>
+      <div class="feat-card"><div class="fc-num">05</div><div class="fc-title">Shift Progression</div><p class="fc-desc">Earn clearance levels, unlock higher-access systems, and take on more complex operational roles.</p><span class="fc-tag">Progression</span></div>
+      <div class="feat-card"><div class="fc-num">06</div><div class="fc-title">Authentic AGR Design</div><p class="fc-desc">Unit 1 is based on Advanced Gas-cooled architecture — graphite moderator, CO&#x2082; coolant, stainless steel fuel cans.</p><span class="fc-tag">Lore-accurate</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="studio">
+  <div class="studio-sec">
+    <div class="studio-grid">
+      <div>
+        <div class="s-label">The Developer</div>
+        <h2 class="s-title">Built by PulseGrid Studios</h2>
+        <p class="s-desc">PulseGrid Studios is a Roblox development group building immersive, technically rich simulation experiences. Looped Operation is their flagship title — a passion project built around authentic nuclear reactor operations.<br><br>Follow development progress and become part of the community before launch.</p>
+      </div>
+      <div class="studio-card">
+        <div class="sc-name">PulseGrid Studios</div>
+        <div class="sc-sub">Roblox Development Group</div>
+        <p class="sc-desc">Join the community on Roblox and Discord to stay updated on development, drop suggestions, and be first in line when the game releases.</p>
+        <div style="display:flex;flex-direction:column;gap:0.85rem">
+          <a href="https://www.roblox.com/communities/33322553/PulseGrid-Studios" target="_blank" class="sc-lnk">Roblox Community<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+          <a href="https://discord.gg/hbsPmdzdyE" target="_blank" class="sc-lnk">Discord Server<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="community" class="comm-section">
+  <div class="comm-inner">
+    <div class="s-label" style="justify-content:center">Community</div>
+    <h2 class="s-title" style="text-align:center">Get In Early</h2>
+    <p style="color:var(--muted);font-size:0.92rem;line-height:1.85">The game isn't out yet — but the community is live. Join now to influence development, get sneak peeks, and be first to know when Looped Operation drops on Roblox.</p>
+    <div class="comm-cards">
+      <a href="https://discord.gg/hbsPmdzdyE" target="_blank" class="comm-card dc">
+        <div class="cc-icon dc-i"><svg width="26" height="20" viewBox="0 0 71 55" fill="#5865F2"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.7.4a.2.2 0 0 0-.2.1 40.9 40.9 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A38.4 38.4 0 0 0 25.6.5a.2.2 0 0 0-.2-.1A58.3 58.3 0 0 0 11 4.9a.2.2 0 0 0-.1.1C1.6 19-.9 32.8.3 46.4a.2.2 0 0 0 .1.1 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36 36 0 0 1-5.5 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.6 58.6 0 0 0 17.7-9 .2.2 0 0 0 .1-.1c1.5-15.5-2.5-29.2-10.6-41.2a.2.2 0 0 0-.1-.1zM23.7 38.2c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.2 6.4 7.2 0 3.9-2.8 7.2-6.4 7.2zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.2 6.4 7.2 0 3.9-2.8 7.2-6.4 7.2z"/></svg></div>
+        <div class="cc-name">Discord Server</div>
+        <div class="cc-desc">discord.gg/hbsPmdzdyE</div>
+      </a>
+      <a href="https://www.roblox.com/communities/33322553/PulseGrid-Studios" target="_blank" class="comm-card rb">
+        <div class="cc-icon rb-i"><svg width="22" height="22" viewBox="0 0 40 40" fill="none"><path d="M8 28L12 8l20 4-4 20L8 28z" fill="#ff6b35"/><path d="M17 19l2-6 6 2-2 6-6-2z" fill="#04090d"/></svg></div>
+        <div class="cc-name">Roblox Community</div>
+        <div class="cc-desc">PulseGrid Studios Group</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="f-logo">PULSEGRID <span>STUDIOS</span></a>
+  <span class="f-copy">&copy; 2026 PulseGrid Studios</span>
+  <div class="f-links">
+    <a href="https://discord.gg/hbsPmdzdyE" target="_blank">Discord</a>
+    <a href="https://www.roblox.com/communities/33322553/PulseGrid-Studios" target="_blank">Roblox</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('rc');
+  var W=window.innerWidth,H=window.innerHeight;
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(W,H);
+  renderer.setClearColor(0x000000,0);
+
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(52,W/H,0.1,200);
+  camera.position.set(0,1.5,12);
+  camera.lookAt(0,0,0);
+
+  var C=0x00e5ff,O=0xff6b35;
+
+  // Vessel rings
+  for(var i=-2.5;i<=2.5;i+=0.625){
+    var rg=new THREE.RingGeometry(2.48,2.52,64);
+    var rm=new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.18,side:THREE.DoubleSide});
+    var r=new THREE.Mesh(rg,rm);
+    r.rotation.x=Math.PI/2;r.position.y=i;scene.add(r);
+  }
+
+  // Vessel vertical lines
+  for(var j=0;j<18;j++){
+    var a=(j/18)*Math.PI*2;
+    var pts=[new THREE.Vector3(Math.cos(a)*2.5,-2.5,Math.sin(a)*2.5),new THREE.Vector3(Math.cos(a)*2.5,2.5,Math.sin(a)*2.5)];
+    var lg=new THREE.BufferGeometry().setFromPoints(pts);
+    var lm=new THREE.LineBasicMaterial({color:C,transparent:true,opacity:0.08});
+    scene.add(new THREE.Line(lg,lm));
+  }
+
+  // Caps
+  [-2.5,2.5].forEach(function(y){
+    var cg=new THREE.CircleGeometry(2.5,64),cm=new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.05,side:THREE.DoubleSide});
+    var c=new THREE.Mesh(cg,cm);c.rotation.x=Math.PI/2;c.position.y=y;scene.add(c);
+    var crg=new THREE.RingGeometry(2.3,2.52,64),crm=new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.35,side:THREE.DoubleSide});
+    var cr=new THREE.Mesh(crg,crm);cr.rotation.x=Math.PI/2;cr.position.y=y;scene.add(cr);
+  });
+
+  // Core
+  var core=new THREE.Mesh(new THREE.SphereGeometry(0.75,32,32),new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.8}));
+  scene.add(core);
+  var glow=new THREE.Mesh(new THREE.SphereGeometry(1.15,32,32),new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.07,side:THREE.BackSide}));
+  scene.add(glow);
+  var glow2=new THREE.Mesh(new THREE.SphereGeometry(1.6,32,32),new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.03,side:THREE.BackSide}));
+  scene.add(glow2);
+
+  // Control rods
+  var rods=new THREE.Group();
+  for(var k=0;k<6;k++){
+    var ang=(k/6)*Math.PI*2,rd=1.4;
+    var rodm=new THREE.MeshBasicMaterial({color:k%2===0?C:O,transparent:true,opacity:0.55});
+    var rod=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,4.5,8),rodm);
+    rod.position.set(Math.cos(ang)*rd,0,Math.sin(ang)*rd);
+    rods.add(rod);
+  }
+  scene.add(rods);
+
+  // Orbiting rings + dots
+  var orbitDots=[];
+  var oData=[{r:3.8,tilt:0.45,col:C,sp:0.38},{r:4.6,tilt:-0.55,col:O,sp:-0.22},{r:5.4,tilt:1.05,col:C,sp:0.15}];
+  oData.forEach(function(d){
+    var curve=new THREE.EllipseCurve(0,0,d.r,d.r*0.32,0,Math.PI*2,false,0);
+    var pts2=curve.getPoints(128);
+    var og=new THREE.BufferGeometry().setFromPoints(pts2);
+    var om=new THREE.LineBasicMaterial({color:d.col,transparent:true,opacity:0.4});
+    var ol=new THREE.Line(og,om);
+    ol.rotation.x=d.tilt;
+    scene.add(ol);
+
+    var dot=new THREE.Mesh(new THREE.SphereGeometry(0.07,8,8),new THREE.MeshBasicMaterial({color:d.col}));
+    dot.userData={r:d.r,tilt:d.tilt,ry:0.32,sp:d.sp,ph:Math.random()*Math.PI*2};
+    scene.add(dot);
+    orbitDots.push(dot);
+  });
+
+  // Outer structural ring
+  var oring=new THREE.Mesh(new THREE.RingGeometry(4.0,4.15,64),new THREE.MeshBasicMaterial({color:C,transparent:true,opacity:0.08,side:THREE.DoubleSide}));
+  oring.rotation.x=Math.PI/2;scene.add(oring);
+
+  // Particles
+  var pc=180,pp=new Float32Array(pc*3);
+  for(var p=0;p<pc*3;p++)pp[p]=(Math.random()-0.5)*22;
+  var pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+  scene.add(new THREE.Points(pg,new THREE.PointsMaterial({color:C,size:0.045,transparent:true,opacity:0.25})));
+
+  var t=0,mx=0,my=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.008;
+    scene.rotation.y=t*0.1;
+
+    var pulse=0.88+Math.sin(t*2.4)*0.12;
+    core.scale.setScalar(pulse);
+    glow.scale.setScalar(pulse*1.05);
+    glow2.scale.setScalar(pulse*1.08);
+    core.material.opacity=0.55+Math.sin(t*2.4)*0.25;
+
+    rods.children.forEach(function(rod,i){rod.position.y=Math.sin(t*1.6+i*1.05)*0.35;});
+
+    orbitDots.forEach(function(dot){
+      var d=dot.userData,ang=t*d.sp*2+d.ph;
+      dot.position.set(Math.cos(ang)*d.r,Math.sin(ang)*d.r*Math.sin(d.tilt)*0.5,Math.sin(ang)*d.r*d.ry);
+    });
+
+    camera.position.x+=(mx-camera.position.x)*0.04;
+    camera.position.y+=(-my+1.5-camera.position.y)*0.04;
+    camera.lookAt(0,0,0);
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',function(){
+    W=window.innerWidth;H=window.innerHeight;
+    camera.aspect=W/H;camera.updateProjectionMatrix();
+    renderer.setSize(W,H);
+  });
+
+  document.addEventListener('mousemove',function(e){
+    mx=(e.clientX/window.innerWidth-0.5)*0.5;
+    my=(e.clientY/window.innerHeight-0.5)*0.25;
+  });
+})();
+</script>
+</body>
+</html>
