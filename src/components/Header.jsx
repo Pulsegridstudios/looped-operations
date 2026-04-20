@@ -12,11 +12,11 @@ export default function Header({
     <header className={`sticky top-0 z-50 backdrop-blur border-b transition-colors duration-300 ${palette.nav}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
         <a href="#top" className="flex items-center gap-3">
-<img
-  src="/logo.png"
-  alt="PulseGrid Studios"
-  className="h-14 w-14 rounded-xl object-cover"
-/>
+    <img>
+        src="/logo.png"
+        alt="PulseGrid Studios"
+        className="h-14 w-14 rounded-xl object-cover"
+      </img>
 
           <div>
             <div className="text-lg sm:text-xl font-semibold tracking-tight">PulseGrid Studios</div>
