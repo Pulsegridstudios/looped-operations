@@ -21,11 +21,14 @@ export default function TeamSection({ palette, theme, team }) {
             </div>
 
             <div className={`relative overflow-hidden rounded-2xl border mb-5 ${theme === "dark" ? "border-slate-800 bg-slate-950/80" : "border-slate-200 bg-slate-50"}`}>
-              <img
-                src={getAvatarUrl(member.robloxId)}
-                alt={member.name}
-                className="h-48 w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-              />
+<img
+  src={getAvatarUrl(member.robloxId)}
+  alt={member.name}
+  className="h-48 w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+  onError={(e) => {
+    e.currentTarget.src = "https://placehold.co/420x420?text=Avatar";
+  }}
+/>
 
               <div className="absolute inset-0 flex items-end justify-between p-4 opacity-0 translate-y-2 transition duration-300 group-hover:opacity-100 group-hover:translate-y-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent">
                 <span className="rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-slate-950">
