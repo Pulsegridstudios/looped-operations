@@ -118,4 +118,12 @@ export const discordTeam = [
     href: "https://www.roblox.com/users/9601251159/profile",
     cta: "View profile",
   },
+      {
+    name: "OzzyinWinter",
+    role: "Moderator",
+    bio: "Helps maintain a safe and respectful environment by enforcing rules, assisting members, and handling reports. Ensures the community runs smoothly on a day-to-day basis.",
+    avatar: `${import.meta.env.BASE_URL}avatars/ozzy.png`,
+    href: "https://www.roblox.com/users/4543917288/profile",
+    cta: "View profile",
+  },
 ];
