@@ -3,6 +3,7 @@ export const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Looped Operations", href: "#looped-operations" },
   { label: "Team", href: "#team" },
+  { label: "Career", href: "https://pulsegridstudios.github.io/hub/pages/applications/" },
 ];
 
 export const heroStats = [
