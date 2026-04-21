@@ -17,22 +17,48 @@ export default function TeamSection({
     if (allMembers.length === 0) return;
 
     const uniqueIds = [...new Set(allMembers.map((member) => member.robloxId))];
-    const userIds = uniqueIds.join(",");
+    let cancelled = false;
 
-    fetch(
-      `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userIds}&size=420x420&format=Png&isCircular=false`
-    )
-      .then((res) => res.json())
-      .then((data) => {
+    async function loadAvatars(retries = 5) {
+      try {
+        const userIds = uniqueIds.join(",");
+        const res = await fetch(
+          `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userIds}&size=420x420&format=Png&isCircular=false`
+        );
+        const data = await res.json();
+
+        if (!data?.data) return;
+
         const newAvatarMap = {};
-        for (const item of data.data || []) {
-          newAvatarMap[item.targetId] = item.imageUrl;
+        let hasPending = false;
+
+        for (const item of data.data) {
+          if (item.state === "Completed" && item.imageUrl) {
+            newAvatarMap[item.targetId] = item.imageUrl;
+          } else if (item.state === "Pending") {
+            hasPending = true;
+          }
         }
-        setAvatarMap(newAvatarMap);
-      })
-      .catch((error) => {
+
+        if (!cancelled) {
+          setAvatarMap((prev) => ({ ...prev, ...newAvatarMap }));
+        }
+
+        if (hasPending && retries > 0) {
+          setTimeout(() => {
+            loadAvatars(retries - 1);
+          }, 800);
+        }
+      } catch (error) {
         console.error("Failed to fetch Roblox avatars:", error);
-      });
+      }
+    }
+
+    loadAvatars();
+
+    return () => {
+      cancelled = true;
+    };
   }, [team, discordTeam]);
 
   const renderCards = (members) => (
@@ -60,16 +86,14 @@ export default function TeamSection({
           >
             <img
               src={
-                member.robloxId
-                  ? avatarMap[member.robloxId] ||
-                    "https://placehold.co/420x420/png?text=Loading"
-                  : "https://placehold.co/420x420/png?text=Avatar"
+                member.avatar ||
+                avatarMap[member.robloxId] ||
+                "https://placehold.co/420x420/png?text=Loading"
               }
               alt={member.name}
               className="h-48 w-full object-cover transition duration-300 group-hover:scale-[1.03]"
               onError={(e) => {
-                e.currentTarget.src =
-                  "https://placehold.co/420x420/png?text=Avatar";
+                e.currentTarget.src = "https://placehold.co/420x420/png?text=Avatar";
               }}
             />
 
