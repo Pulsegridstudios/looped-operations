@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useTheme } from "./hooks/useTheme";
-import { navItems, heroStats, projects, screenshotCards, team } from "./data/siteData";
+import {
+  navItems,
+  heroStats,
+  projects,
+  screenshotCards,
+  team,
+  discordTeam,
+} from "./data/siteData";
 import BackgroundGlow from "./components/BackgroundGlow";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
@@ -35,7 +42,12 @@ export default function App() {
           theme={theme}
           screenshotCards={screenshotCards}
         />
-        <TeamSection palette={palette} theme={theme} team={team} />
+        <TeamSection
+          palette={palette}
+          theme={theme}
+          team={team}
+          discordTeam={discordTeam}
+        />
         <ContactSection palette={palette} />
       </main>
       <Footer theme={theme} palette={palette} />

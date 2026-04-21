@@ -75,3 +75,22 @@ export const team = [
     cta: "Meet member",
   },
 ];
+
+export const discordTeam = [
+  {
+    name: "Example Moderator",
+    role: "Moderator",
+    bio: "Helps manage the Discord server, support members, and keep the community welcoming and organised.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+  {
+    name: "Example Admin",
+    role: "Administrator",
+    bio: "Oversees community operations, moderation standards, and the overall Discord experience.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+];
