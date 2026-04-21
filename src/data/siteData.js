@@ -52,43 +52,44 @@ export const screenshotCards = [
 export const team = [
     {
     name: "Yoro",
-    role: "Founder / Developer",
-    bio: "Founder of PulseGrid Studios,         Contributes to the development of core systems and features while helping shape the overall direction of the project. Supports both technical implementation and creative decisions to ensure a consistent and high-quality experience.",
+    role: "Developer / Founder",
+    bio: "Contributes to the development of core systems and features while helping shape the overall direction of the project.",
     avatar: `${import.meta.env.BASE_URL}avatars/yoro.png`,
     href: "#contact",
-    cta: "Meet member",
+    cta: "View profile",
   },
+
   {
     name: "FrazzlesGrant",
     role: "Lead Developer / Co-Founder",
-    bio: "Leads the overall direction of the project, overseeing development, design, and long-term vision. Responsible for core systems, technical decisions, and ensuring the project maintains a consistent, high-quality standard.  ",
+    bio: "Leads the development team with a focus on immersive design, identity, and long-term project vision.",
     avatar: `${import.meta.env.BASE_URL}avatars/frazzlesgrant.png`,
     href: "#contact",
     cta: "View profile",
   },
-  {
-    name: "Team Member (placeholder)",
-    role: "Community / Support",
-    bio: "Helps shape the community experience, feedback flow, and overall player-facing presentation.",
-    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    {
+    name: "Nicolas",
+    role: "Developer / Founder",
+    bio: "Oversees testing and quality assurance, ensuring systems function correctly and the experience remains stable, polished, and free of major issues before release.",
+    avatar: `${import.meta.env.BASE_URL}avatars/nico.png`,
     href: "#contact",
-    cta: "Meet member",
+    cta: "View profile",
   },
 ];
 
 export const discordTeam = [
   {
-    name: "Example Moderator",
+    name: "Moderator",
     role: "Moderator",
-    bio: "Helps manage the Discord server, support members, and keep the community welcoming and organised.",
+    bio: "Helps manage the Discord server and support members.",
     avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
     href: "#contact",
     cta: "View profile",
   },
   {
-    name: "Example Admin",
+    name: "Administrator",
     role: "Administrator",
-    bio: "Oversees community operations, moderation standards, and the overall Discord experience.",
+    bio: "Oversees moderation and overall community management.",
     avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
     href: "#contact",
     cta: "View profile",
