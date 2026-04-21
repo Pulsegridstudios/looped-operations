@@ -3,7 +3,6 @@ export const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Looped Operations", href: "#looped-operations" },
   { label: "Team", href: "#team" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export const heroStats = [
