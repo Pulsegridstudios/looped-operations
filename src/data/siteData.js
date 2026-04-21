@@ -69,7 +69,7 @@ export const team = [
   },
     {
     name: "Nicolas",
-    role: "Developer / Founder",
+    role: "QA Lead",
     bio: "Oversees testing and quality assurance, ensuring systems function correctly and the experience remains stable, polished, and free of major issues before release.",
     avatar: `${import.meta.env.BASE_URL}avatars/nico.png`,
     href: "#contact",
@@ -79,6 +79,38 @@ export const team = [
 
 export const discordTeam = [
   {
+    name: "Moderator",
+    role: "Moderator",
+    bio: "Helps manage the Discord server and support members.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+  {
+    name: "Administrator",
+    role: "Administrator",
+    bio: "Oversees moderation and overall community management.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+    {
+    name: "Moderator",
+    role: "Moderator",
+    bio: "Helps manage the Discord server and support members.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+  {
+    name: "Administrator",
+    role: "Administrator",
+    bio: "Oversees moderation and overall community management.",
+    avatar: `${import.meta.env.BASE_URL}avatars/placeholder.png`,
+    href: "#contact",
+    cta: "View profile",
+  },
+    {
     name: "Moderator",
     role: "Moderator",
     bio: "Helps manage the Discord server and support members.",
