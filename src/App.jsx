@@ -15,7 +15,6 @@ import AboutSection from "./components/AboutSection";
 import ProjectsSection from "./components/ProjectsSection";
 import FeaturedGameSection from "./components/FeaturedGameSection";
 import TeamSection from "./components/TeamSection";
-import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -50,7 +49,6 @@ export default function App() {
           team={team}
           discordTeam={discordTeam}
         />
-        <ContactSection palette={palette} />
       </main>
       <Footer theme={theme} palette={palette} />
     </div>

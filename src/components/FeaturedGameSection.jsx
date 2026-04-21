@@ -11,8 +11,8 @@ export default function FeaturedGameSection({ palette, theme, screenshotCards })
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <a href="#" className={`rounded-2xl px-5 py-3 font-medium transition text-center ${palette.buttonPrimary}`}>
-                Add Roblox game link
+              <a href="https://pulsegridstudios.github.io/" className={`rounded-2xl px-5 py-3 font-medium transition text-center ${palette.buttonPrimary}`}>
+                Looped Operations Website
               </a>
               <a href="#projects" className={`rounded-2xl px-5 py-3 font-medium transition text-center ${palette.buttonSecondary}`}>
                 Back to projects

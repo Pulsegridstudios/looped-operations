@@ -10,10 +10,10 @@ export default function Footer({ theme, palette }) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 sm:items-center text-sm">
-          <a href="#" target="_blank" rel="noopener noreferrer" className={`${palette.muted} hover:opacity-70 transition`}>
+          <a href="https://www.roblox.com/communities/33322553/PulseGrid-Studios#!/about" target="_blank" rel="noopener noreferrer" className={`${palette.muted} hover:opacity-70 transition`}>
             Roblox Group
           </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className={`${palette.muted} hover:opacity-70 transition`}>
+          <a href="https://discord.gg/WrzPg55m" target="_blank" rel="noopener noreferrer" className={`${palette.muted} hover:opacity-70 transition`}>
             Discord Server
           </a>
           <a href="#" className={`${palette.muted} hover:opacity-70 transition`}>
