@@ -12,6 +12,8 @@ export default function TeamSection({
         <a
           key={member.name + member.role}
           href={member.href}
+          target="_blank"
+          rel="noopener noreferrer"
           className={`group relative overflow-hidden rounded-3xl p-6 transition-all duration-300 ${palette.card} hover:-translate-y-2 hover:shadow-2xl hover:border-sky-400/40`}
         >
           <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">

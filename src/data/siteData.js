@@ -55,7 +55,7 @@ export const team = [
     role: "Developer / Founder",
     bio: "Contributes to the development of core systems and features while helping shape the overall direction of the project.",
     avatar: `${import.meta.env.BASE_URL}avatars/yoro.png`,
-    href: "#contact",
+    href: "https://www.roblox.com/users/3981510235/profile",
     cta: "View profile",
   },
 
@@ -64,7 +64,7 @@ export const team = [
     role: "Lead Developer / Co-Founder",
     bio: "Leads the development team with a focus on immersive design, identity, and long-term project vision.",
     avatar: `${import.meta.env.BASE_URL}avatars/frazzlesgrant.png`,
-    href: "#contact",
+    href: "https://www.roblox.com/users/4594856891/profile",
     cta: "View profile",
   },
     {
@@ -72,7 +72,7 @@ export const team = [
     role: "QA Lead",
     bio: "Oversees testing and quality assurance, ensuring systems function correctly and the experience remains stable, polished, and free of major issues before release.",
     avatar: `${import.meta.env.BASE_URL}avatars/nico.png`,
-    href: "#contact",
+    href: "https://www.roblox.com/users/3314303734/profile",
     cta: "View profile",
   },
 ];
