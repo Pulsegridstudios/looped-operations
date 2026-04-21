@@ -14,3 +14,46 @@ body {
 a {
   text-decoration: none;
 }
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #38bdf8 #0f172a;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #38bdf8;
+  border-radius: 999px;
+  border: 3px solid #0f172a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0ea5e9;
+}
+
+/* Light mode */
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #0284c7;
+  border: 3px solid #e2e8f0;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #0369a1;
+}
+
+html:not(.dark) * {
+  scrollbar-color: #0284c7 #e2e8f0;
+}
