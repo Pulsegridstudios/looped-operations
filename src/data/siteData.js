@@ -67,6 +67,14 @@ export const team = [
     href: "https://www.roblox.com/users/4594856891/profile",
     cta: "View profile",
   },
+      {
+    name: "Jonathon",
+    role: "3D Designer",
+    bio: "Creates and develops in-game assets and environments, focusing on detail, realism, and consistency. Responsible for building high-quality models that enhance the overall visual experience of the project.",
+    avatar: `${import.meta.env.BASE_URL}avatars/nico.png`,
+    href: "https://www.roblox.com/users/118682390/profile",
+    cta: "View profile",
+  },
     {
     name: "Nicolas",
     role: "QA Lead",
