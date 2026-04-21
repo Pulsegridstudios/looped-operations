@@ -23,7 +23,9 @@ export default function App() {
   const { theme, palette, toggleTheme } = useTheme();
 
   return (
-    <div className={`relative min-h-screen overflow-x-hidden transition-colors duration-300 ${palette.page}`}>
+    <div
+      className={`relative min-h-screen overflow-x-hidden transition-colors duration-300 ${palette.page}`}
+    >
       <BackgroundGlow palette={palette} />
       <Header
         theme={theme}

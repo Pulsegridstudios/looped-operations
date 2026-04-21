@@ -1,6 +1,40 @@
 import { ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default function TeamSection({ palette, theme, team, discordTeam }) {
+export default function TeamSection({
+  palette,
+  theme,
+  team = [],
+  discordTeam = [],
+}) {
+  const [avatarMap, setAvatarMap] = useState({});
+
+  useEffect(() => {
+    const allMembers = [...team, ...discordTeam].filter(
+      (member) => member.robloxId
+    );
+
+    if (allMembers.length === 0) return;
+
+    const uniqueIds = [...new Set(allMembers.map((member) => member.robloxId))];
+    const userIds = uniqueIds.join(",");
+
+    fetch(
+      `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userIds}&size=420x420&format=Png&isCircular=false`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newAvatarMap = {};
+        for (const item of data.data || []) {
+          newAvatarMap[item.targetId] = item.imageUrl;
+        }
+        setAvatarMap(newAvatarMap);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch Roblox avatars:", error);
+      });
+  }, [team, discordTeam]);
+
   const renderCards = (members) => (
     <div className="mt-10 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
       {members.map((member) => (
@@ -25,11 +59,17 @@ export default function TeamSection({ palette, theme, team, discordTeam }) {
             }`}
           >
             <img
-              src={member.avatar}
+              src={
+                member.robloxId
+                  ? avatarMap[member.robloxId] ||
+                    "https://placehold.co/420x420/png?text=Loading"
+                  : "https://placehold.co/420x420/png?text=Avatar"
+              }
               alt={member.name}
               className="h-48 w-full object-cover transition duration-300 group-hover:scale-[1.03]"
               onError={(e) => {
-                e.currentTarget.src = "https://placehold.co/420x420/png?text=Avatar";
+                e.currentTarget.src =
+                  "https://placehold.co/420x420/png?text=Avatar";
               }}
             />
 
@@ -55,7 +95,6 @@ export default function TeamSection({ palette, theme, team, discordTeam }) {
 
   return (
     <>
-      {/* Main Team */}
       <section id="team" className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
         <div className="max-w-2xl">
           <p className={`text-sm font-medium ${palette.accentText}`}>
@@ -69,8 +108,10 @@ export default function TeamSection({ palette, theme, team, discordTeam }) {
         {renderCards(team)}
       </section>
 
-      {/* Discord Team */}
-      <section id="discord-team" className="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
+      <section
+        id="discord-team"
+        className="max-w-6xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20"
+      >
         <div className="max-w-2xl">
           <p className={`text-sm font-medium ${palette.accentText}`}>
             Community
@@ -80,7 +121,7 @@ export default function TeamSection({ palette, theme, team, discordTeam }) {
           </h2>
         </div>
 
-        {renderCards(discordTeam || [])}
+        {renderCards(discordTeam)}
       </section>
     </>
   );
